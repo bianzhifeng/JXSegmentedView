@@ -135,6 +135,14 @@ public protocol JXSegmentedViewDelegate: AnyObject {
     ///   - segmentedView: JXSegmentedView
     ///   - index: 目标index
     func segmentedView(_ segmentedView: JXSegmentedView, canClickItemAt index: Int) -> Bool
+    
+    /// collectview 滑动
+    ///
+    /// - Parameters:
+    ///   - segmentedView: JXSegmentedView
+    ///   - index: 目标index
+    func segmentedViewDidScroll(_ segmentedView: JXSegmentedView, scrollView: UIScrollView)
+    func segmentedViewDidEndScroll(_ segmentedView: JXSegmentedView, scrollView: UIScrollView)
 }
 
 /// 提供JXSegmentedViewDelegate的默认实现，这样对于遵从JXSegmentedViewDelegate的类来说，所有代理方法都是可选实现的。
@@ -144,6 +152,8 @@ public extension JXSegmentedViewDelegate {
     func segmentedView(_ segmentedView: JXSegmentedView, didScrollSelectedItemAt index: Int) { }
     func segmentedView(_ segmentedView: JXSegmentedView, scrollingFrom leftIndex: Int, to rightIndex: Int, percent: CGFloat) { }
     func segmentedView(_ segmentedView: JXSegmentedView, canClickItemAt index: Int) -> Bool { return true }
+    func segmentedViewDidScroll(_ segmentedView: JXSegmentedView, scrollView: UIScrollView) { }
+    func segmentedViewDidEndScroll(_ segmentedView: JXSegmentedView, scrollView: UIScrollView) { }
 }
 
 /// 内部会自己找到父UIViewController，然后将其automaticallyAdjustsScrollViewInsets设置为false，这一点请知晓。
@@ -704,6 +714,24 @@ extension JXSegmentedView: UICollectionViewDelegate {
             //当前没有正在过渡的item，才允许点击选中
             clickSelectItemAt(index: indexPath.item)
         }
+    }
+    
+    public func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        delegate?.segmentedViewDidScroll(self, scrollView: scrollView)
+    }
+    
+    public func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        delegate?.segmentedViewDidScroll(self, scrollView: scrollView)
+    }
+    
+    public func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        if decelerate == false {
+            delegate?.segmentedViewDidEndScroll(self, scrollView: scrollView)
+        }
+    }
+    
+    public func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        delegate?.segmentedViewDidEndScroll(self, scrollView: scrollView)
     }
 }
 
