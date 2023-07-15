@@ -733,6 +733,11 @@ extension JXSegmentedView: UICollectionViewDelegate {
     public func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         delegate?.segmentedViewDidEndScroll(self, scrollView: scrollView)
     }
+
+    public func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
+        delegate?.segmentedViewDidEndScroll(self, scrollView: scrollView)
+    }
+
 }
 
 extension JXSegmentedView: UICollectionViewDelegateFlowLayout {
