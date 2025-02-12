@@ -68,7 +68,9 @@ open class JXSegmentedTitleImageDataSource: JXSegmentedTitleDataSource {
         if itemWidth == JXSegmentedViewAutomaticDimension {
             switch titleImageType {
             case .leftImage, .rightImage:
-                width += titleImageSpacing + imageSize.width
+                if let imgs = normalImageInfos, index < imgs.count, imgs[index].isEmpty == false {
+                    width += titleImageSpacing + imageSize.width
+                }
             case .topImage, .bottomImage:
                 width = max(itemWidth, imageSize.width)
             case .onlyImage:
@@ -84,7 +86,9 @@ open class JXSegmentedTitleImageDataSource: JXSegmentedTitleDataSource {
         var width = super.segmentedView(segmentedView, widthForItemContentAt: index)
         switch titleImageType {
         case .leftImage, .rightImage:
-            width += titleImageSpacing + imageSize.width
+            if let imgs = normalImageInfos, index < imgs.count, imgs[index].isEmpty == false {
+                width += titleImageSpacing + imageSize.width
+            }
         case .topImage, .bottomImage:
             width = max(itemWidth, imageSize.width)
         case .onlyImage:
