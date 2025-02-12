@@ -15,6 +15,7 @@ public enum JXSegmentedTitleImageType {
     case rightImage
     case onlyImage
     case onlyTitle
+    case backgroundImage
 }
 
 public typealias LoadImageClosure = ((UIImageView, String) -> Void)
@@ -72,11 +73,13 @@ open class JXSegmentedTitleImageDataSource: JXSegmentedTitleDataSource {
                     width += titleImageSpacing + imageSize.width
                 }
             case .topImage, .bottomImage:
-                width = max(itemWidth, imageSize.width)
+                width = max(width, imageSize.width)
             case .onlyImage:
                 width = imageSize.width
             case .onlyTitle:
                 break
+            case .backgroundImage:
+                width = max(width, imageSize.width)
             }
         }
         return width
@@ -90,11 +93,13 @@ open class JXSegmentedTitleImageDataSource: JXSegmentedTitleDataSource {
                 width += titleImageSpacing + imageSize.width
             }
         case .topImage, .bottomImage:
-            width = max(itemWidth, imageSize.width)
+            width = max(width, imageSize.width)
         case .onlyImage:
             width = imageSize.width
         case .onlyTitle:
             break
+        case .backgroundImage:
+            width = max(width, imageSize.width)
         }
         return width
     }
